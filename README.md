@@ -20,3 +20,33 @@ I didn't find many resources on the forum or on GitHub that would allow you to d
 📃 [Documentation](https://next-script-tm.gitbook.io/next-scripts/free-resources/targeting)
 ---
 For the installation read the docs!
+
+---
+
+# Usage
+
+```lua
+exports.targeting:StartTargeting(data)
+```
+data: `table`
+* npc: `boolean` enable raycasting on npc's
+
+---
+
+> An example with npc raycasting disabled
+```lua
+RegisterCommand("getId", function (source, args, raw)
+    local id = exports.targeting:StartTargeting({
+        npc = false
+    })
+    print(id)
+end)
+```
+
+> This is equivalent to:
+```lua
+RegisterCommand("getId", function (source, args, raw)
+    local id = exports.targeting:StartTargeting({})
+    print(id)
+end)
+```
