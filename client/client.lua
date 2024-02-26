@@ -2,6 +2,19 @@ IsSelecting             = false
 local enableNpc         = false
 local selectedPed
 
+StopTargeting = function ()
+    IsSelecting = false
+end
+exports("StopTargeting", StopTargeting)
+
+EndTargeting = function ()
+    DisablePlayerFiring(PlayerPedId(), false)
+    LeaveCursorMode()
+    SendNUIMessage({toggle  = false})
+    SetNuiFocus(false, false)
+    selectedPed = nil
+end
+
 StartTargeting = function (data)
 
     IsSelecting     = true
@@ -113,13 +126,7 @@ RegisterNetEvent("onClientResourceStart", function (resourceName)
     end
 end)
 
-EndTargeting = function ()
-    DisablePlayerFiring(PlayerPedId(), false)
-    LeaveCursorMode()
-    SendNUIMessage({toggle  = false})
-    SetNuiFocus(false, false)
-    selectedPed = nil
-end
+
 
 --[[
     Debug
