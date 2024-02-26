@@ -73,7 +73,7 @@ function GetID()
 
             if CheckSelection() then
                 if selectedPed then
-                    id          = GetPlayerServerId(NetworkGetPlayerIndexFromPed(selectedPed))
+                    id          = GetPlayerServerId(NetworkGetPlayerIndexFromPed(selectedPed)) > 0 and GetPlayerServerId(NetworkGetPlayerIndexFromPed(selectedPed))  or selectedPed
                     IsSelecting = false
                     break
                 else
@@ -87,21 +87,7 @@ function GetID()
     return Citizen.Await(callback)
 end
 
-AddMarkerOnPed = function (selectedPed)
-    -- Head Bone 0x796E = 31086
-    local pedBoneCoords = GetPedBoneCoords(selectedPed, 31086, 0.0, 0.0, 0.0)
-    local textureDict   = Config.Marker.textureDict and Config.Marker.textureDict or nil
-    local textureName   = Config.Marker.textureName and Config.Marker.textureName or nil
-    DrawMarker(Config.Marker.type, pedBoneCoords.x, pedBoneCoords.y, pedBoneCoords.z + Config.Marker.zOffset,
-        Config.Marker.direction.x, Config.Marker.direction.y, Config.Marker.direction.z, -- direction
-        Config.Marker.rotation.x, Config.Marker.rotation.y, Config.Marker.rotation.z, -- rotation
-        Config.Marker.scale.x, Config.Marker.scale.y, Config.Marker.scale.z, -- scale
-        Config.Marker.rgb.r, Config.Marker.rgb.g, Config.Marker.rgb.b, -- rgb
-        Config.Marker.alpha, Config.Marker.bobUpAndDown, Config.Marker.faceCamera, -- alpha, bobUpAndDown, faceCamera
-        2, Config.Marker.rotate, -- 2, rotate
-        textureDict, textureName, false -- textureDict, textureName, drawnOnEnts
-    )
-end
+
 
 --[[
     Threads and Events
@@ -126,6 +112,14 @@ RegisterNetEvent("onClientResourceStart", function (resourceName)
         IsSelecting     = false
     end
 end)
+
+EndTargeting = function ()
+    DisablePlayerFiring(PlayerPedId(), false)
+    LeaveCursorMode()
+    SendNUIMessage({toggle  = false})
+    SetNuiFocus(false, false)
+    selectedPed = nil
+end
 
 --[[
     Debug
