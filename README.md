@@ -19,8 +19,13 @@ I didn't find many resources on the forum or on GitHub that would allow you to d
 ---
 📃 [Documentation](https://next-script-tm.gitbook.io/next-scripts/free-resources/targeting)
 ---
-For the installation read the docs!
 
+
+# Installation
+After you have downloaded the [latest release](https://github.com/nextscripts-5m/targeting/releases) of the resource:
+
+* Put the `targeting` folder into your resource foleder
+* Add `ensure targeting`  to your `server.cfg` or put the folder into a `[collection]` already started in the `server.cfg`
 ---
 
 # Usage
@@ -48,5 +53,16 @@ end)
 RegisterCommand("getId", function (source, args, raw)
     local id = exports.targeting:StartTargeting({})
     print(id)
+end)
+```
+
+## Ox Inventory Give Item Feature
+> At this [line](https://github.com/overextended/ox_inventory/blob/52d99285eef1dc7df31c084679db3fdf6b1c0150/client.lua#L1628) of @ox_inventory/client.lua you can replace all the code of the callback with this
+```lua
+RegisterNUICallback('giveItem', function(data, cb)
+    cb(1)
+    TriggerEvent('ox_inventory:closeInventory')
+    local id = exports.targeting:StartTargeting({})
+    giveItemToTarget(id, data.slot, data.count)
 end)
 ```
