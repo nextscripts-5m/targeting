@@ -52,6 +52,7 @@ StartTargeting = function (data)
                             selectedPed     = closestPed.ped
 
                         elseif closestPed.ped == selectedPed then
+                            Wait(1)
                             selectedPed = nil
                         end
                     end
@@ -74,12 +75,11 @@ function GetID()
     local callback  = promise:new()
     CreateThread(function ()
         while true do
-
             if not IsSelecting then break end
 
             DisableControls()
             CheckExit()
-
+            
             if selectedPed then
                 AddMarkerOnPed(selectedPed)
             end
@@ -91,6 +91,8 @@ function GetID()
                     break
                 else
                     print(("It's not a %s"):format(enableNpc and "ped" or "player"))
+                    IsSelecting = false
+                    break
                 end
             end
             Wait(0)
